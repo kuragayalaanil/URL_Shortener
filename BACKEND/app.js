@@ -12,11 +12,20 @@ import authRouter from "./src/routes/authRoutes.js";
 
 import { errorHandler } from "./utils/errorHandler.js";
 import { redirectFromShortUrl } from "./src/controllers/shortUrlController.js";
+import { attachUser } from "./utils/attachUser.js";
+import cookieParser from "cookie-parser";
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(cookieParser());
+app.use(attachUser);
 app.use("/api/auth", authRouter);
 app.use("/api/create", shortUrlRouter);
 app.get("/:id", redirectFromShortUrl);
