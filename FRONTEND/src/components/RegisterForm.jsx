@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Navigate, useNavigate } from "@tanstack/react-router";
+import { useDispatch } from "react-redux";
+import { login } from "../store/slice/authSlice";
 
 const RegisterForm = ({ state }) => {
   const [name, setName] = useState("");
@@ -7,6 +10,8 @@ const RegisterForm = ({ state }) => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +34,8 @@ const RegisterForm = ({ state }) => {
         },
         { withCredentials: true }
       );
+      dispatch(login.user);
+      navigate({ to: "/login" });
       setLoading(false);
     } catch (err) {
       setLoading(false);
